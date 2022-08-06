@@ -16,7 +16,6 @@ const Signup = () => {
   return (
     <form onSubmit={handleSubmit} className={styles['signup-form']}>
       <h1>Signup</h1>
-
       <label>
         <span>Email:</span>
         <input
