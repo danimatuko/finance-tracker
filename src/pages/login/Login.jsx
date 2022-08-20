@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import { useLogin } from '../../hooks/useLogin';
 import styles from './Login.module.css';
 
@@ -12,13 +15,20 @@ const Login = () => {
     login(email, password);
   };
 
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    user && navigate('/');
+  }, [user]);
+
   return (
     <form onSubmit={handleSubmit} className={styles['login-form']}>
       <h1>Login</h1>
       <label>
         <span>Email:</span>
         <input
-          type="email"
+          type='email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -26,15 +36,15 @@ const Login = () => {
       <label>
         <span>Password:</span>
         <input
-          type="password"
+          type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </label>
-      <button type="submit" className="btn">
+      <button type='submit' className='btn'>
         {isPending ? 'Loading' : 'Login'}
       </button>
-      {error && <p className="error">{error}</p>}
+      {error && <p className='error'>{error}</p>}
     </form>
   );
 };

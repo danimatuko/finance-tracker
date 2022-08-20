@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import { useSignup } from '../../hooks/useSignup';
 import styles from './signup.module.css';
 
@@ -8,10 +10,18 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const { signup, isPending, error } = useSignup();
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     signup(email, password, displayName);
   };
+
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    user && navigate('/');
+  }, [user]);
 
   return (
     <form onSubmit={handleSubmit} className={styles['signup-form']}>
@@ -19,7 +29,7 @@ const Signup = () => {
       <label>
         <span>Email:</span>
         <input
-          type="email"
+          type='email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -27,7 +37,7 @@ const Signup = () => {
       <label>
         <span>Password:</span>
         <input
-          type="password"
+          type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -35,18 +45,18 @@ const Signup = () => {
       <label>
         <span>Display Name:</span>
         <input
-          type="text"
+          type='text'
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
       </label>
 
       {isPending ? (
-        <button className="btn" disabled>
+        <button className='btn' disabled>
           Loading
         </button>
       ) : (
-        <button type="submit" className="btn">
+        <button type='submit' className='btn'>
           Signup
         </button>
       )}
